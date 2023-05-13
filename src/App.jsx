@@ -64,7 +64,7 @@ const App = () => {
 
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.font = '24px "Microsoft YaHei"';
-            ctx.fillText('声明：该曲谱版权归【夏之荷吉他】所有，禁止转载，违者必究！', 20, canvas.height - 20);
+            ctx.fillText('禁止转载用于商业用途，违者必究！', 20, canvas.height - 20);
 
             canvas.toBlob((blob) => {
               const url = URL.createObjectURL(blob);

@@ -20,7 +20,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-start": "electron .",
-    "package": "electron-packager ./ img-water-mark-helper x64 --out ./publish --app-version 1.0.0"
+    "package": "electron-packager ./ img-water-mark-helper x64 --out ./publish --app-version 1.0.0",
+    "electron-start-1": "electron-forge start",
+    "electron-package": "electron-forge package",
+    "electron-make": "electron-forge make"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.1.1",
     "electron": "^24.2.0",
     "electron-packager": "^17.1.1"
   }
