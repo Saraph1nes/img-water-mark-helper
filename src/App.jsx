@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Image as AntdImg, message } from 'antd'
+import React, {useState} from 'react';
+import {Button, message} from 'antd'
 import DraggerComp from './Dragger';
 
 import './App.css';
@@ -9,11 +9,10 @@ const qrcode64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgM
 const App = () => {
   const [fileList, setFileList] = useState([]);
 
-  const handleImg = () => {
+  const handleImg = (callback) => {
     if (fileList.length === 0) {
       message.open({
-        type: 'warning',
-        content: '请先上传图片',
+        type: 'warning', content: '请先上传图片',
       });
       return;
     }
@@ -23,6 +22,8 @@ const App = () => {
 
       const file = fileItem.originFileObj;
       const reader = new FileReader();
+      // 读取图片文件
+      reader.readAsDataURL(file);
       reader.onload = (event) => {
         const img = new Image();
         img.src = event.target.result;
@@ -60,7 +61,7 @@ const App = () => {
 
           img2.onload = () => {
             ctx.restore();
-            ctx.drawImage(img2, canvas.width - 120,canvas.height - 120, 120, 120);
+            ctx.drawImage(img2, canvas.width - 140, 20, 120, 120);
 
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
             ctx.font = '24px "Microsoft YaHei"';
@@ -68,15 +69,15 @@ const App = () => {
 
             canvas.toBlob((blob) => {
               const url = URL.createObjectURL(blob);
-              saveBlobToDisk(url, file.name);
+              if (callback) {
+                callback(url, file.name)
+              }
               URL.revokeObjectURL(url);
             }, file.type, 1);
           }
         };
       };
 
-      // 读取图片文件
-      reader.readAsDataURL(file);
     }
   }
 
@@ -89,13 +90,11 @@ const App = () => {
     a.click();
   }
 
-  return (
-    <div>
-      <DraggerComp fileList={fileList} setFileList={setFileList} />
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <Button onClick={handleImg}>开始处理</Button>
+  return (<div>
+      <DraggerComp fileList={fileList} setFileList={setFileList} handleImg={handleImg}/>
+      <div style={{textAlign: 'center', marginTop: '20px'}}>
+        <Button onClick={() => handleImg(saveBlobToDisk)}>保存图片</Button>
       </div>
-    </div>
-  )
+    </div>)
 };
 export default App;
